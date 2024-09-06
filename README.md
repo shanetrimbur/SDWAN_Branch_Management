@@ -246,7 +246,7 @@ The **SD-WAN Controller** constantly monitors the performance of the available W
 
 ---
 
-### **UML Deployment Diagram**
+### **Deployment Diagram**
 
 ```plaintext
                 +---------------------------+
