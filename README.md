@@ -1,7 +1,3 @@
-Here's a comprehensive **README** for the **SDWAN Branch Management Tool** project that outlines current features and potential future features:
-
----
-
 # **SD-WAN Branch Office Connectivity Management Tool**
 
 ## **Overview**
@@ -191,13 +187,3 @@ For any questions or support regarding this project, feel free to reach out:
 
 - Project Maintainer: Shane Trimbur [shanetrimbur@gmail.com]
 
----
-
-This README outlines the current progress of the project and offers a vision for future enhancements that will extend the tool's functionality.
-
----
-
-**Hotkeys**:
-- W: Yes, Continue
-- E: Expand with more features
-- Z: Write finished fully implemented code to files. Zip user files, download link
