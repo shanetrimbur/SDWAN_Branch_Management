@@ -152,6 +152,135 @@ SDWAN_Branch_Management/
    - Integrate with firewalls and IDS/IPS systems to ensure that all network traffic complies with security policies.
    - Introduce network segmentation to separate traffic based on security classifications.
 
+
+---
+
+### **MPLS and SD-WAN Routing Overview**
+
+```plaintext
+         +-------------------------------------------------------+
+         |                        Internet                       |
+         +---------------------------+---------------------------+
+                                     |
+                                     |
+                         +-----------------------+
+                         |       SD-WAN          |  
+                         |      Controller       |   
+                         | (Policy & Path Mgmt)  |
+                         +-----------------------+
+                                     |
+      +------------------------------+------------------------------+
+      | MPLS Link              (SD-WAN Tunnel)                  Broadband/LTE Link
++---------------------+                                   +---------------------+
+|     Branch A        |------ MPLS (WAN) Tunnel --------->|     Branch B        |
+|   (Edge Router)     |                                   |   (Edge Router)     |
++---------------------+                                   +---------------------+
+      |                                                        |
+      |                                                        |
++---------------------+                                   +---------------------+
+|   Applications      |                                   |   Applications      |
+| - VoIP              |                                   | - VoIP              |
+| - Video Conferencing|                                   | - Video Conferencing|
+| - Cloud Access      |                                   | - Cloud Access      |
++---------------------+                                   +---------------------+
+
+           +------------------------------------------------------------------+
+           |                         MPLS NETWORK                             |
+           |  - Low-latency, reliable WAN link for critical applications       |
+           |  - Dedicated paths based on labels (no traditional IP routing)    |
+           |  - Enforces QoS (Quality of Service) for traffic prioritization   |
+           |  - Used for latency-sensitive apps like VoIP and Video Conferencing|
+           +------------------------------------------------------------------+
+                                     |
+      +------------------------------+------------------------------+
+                                     |
+                         +-----------------------+
+                         |  Public WAN Links     |  
+                         | (Broadband, LTE/5G)   |   
+                         +-----------------------+
+      +------------------------------+------------------------------+
+      |                                                        |
+      |                                                        |
++---------------------+                                   +---------------------+
+|     Branch A        |                                   |     Branch B        |
+|   (Edge Router)     |------ Broadband/LTE Path -------->|   (Edge Router)     |
++---------------------+                                   +---------------------+
+
+           +------------------------------------------------------------------+
+           |                       PUBLIC WAN LINKS                           |
+           |  - Broadband and LTE/5G connections used for general traffic      |
+           |  - Lower cost and higher capacity than MPLS, but with variable    |
+           |    reliability and latency.                                       |
+           |  - Suitable for general business applications and bulk data      |
+           |    transfers.                                                    |
+           +------------------------------------------------------------------+
+```
+
+---
+
+### **Explanation of Key Concepts**
+
+#### **MPLS (Multi-Protocol Label Switching)**
+- **MPLS** is a type of WAN technology that routes traffic based on short path labels rather than traditional IP addresses. This creates dedicated, reliable paths for data across a network.
+- **Usage**: MPLS is typically used for **latency-sensitive applications** like **VoIP**, **video conferencing**, and **real-time data** transmission.
+- **QoS (Quality of Service)**: MPLS enforces QoS to ensure that critical applications get priority over less critical traffic.
+
+#### **Public WAN Links (Broadband, LTE/5G)**
+- These links are used for more general-purpose traffic. They are often **cheaper** and **more scalable** than MPLS but come with **higher latency** and **less guaranteed reliability**.
+- **Usage**: Ideal for **bulk data transfers**, **cloud access**, and **general business applications** that do not require low latency or guaranteed bandwidth.
+
+#### **SD-WAN Controller**
+- The **SD-WAN Controller** plays a critical role in managing traffic across **multiple WAN links** (such as MPLS, broadband, and LTE).
+- It ensures **dynamic path selection**, allowing traffic to be routed across the best available link based on real-time metrics such as **latency**, **packet loss**, and **jitter**.
+- The controller is responsible for applying **policies** to ensure that critical applications use high-quality links (like MPLS), while non-critical traffic can use public broadband or LTE.
+
+---
+
+### **Dynamic Path Selection**
+
+The **SD-WAN Controller** constantly monitors the performance of the available WAN links (MPLS, Broadband, LTE) and makes routing decisions based on the policies set by network administrators.
+
+- **High-priority applications** (e.g., VoIP or Video) are sent over MPLS links when the latency and performance are within acceptable limits.
+- If the MPLS link becomes degraded (due to high latency or packet loss), the **SD-WAN controller** can reroute the traffic through an alternate path, such as **broadband** or **LTE**.
+- **General applications** (e.g., web traffic, email, file transfers) are usually routed over the cheaper broadband links, keeping MPLS free for high-priority traffic.
+
+---
+
+### **UML Deployment Diagram**
+
+```plaintext
+                +---------------------------+
+                |         Controller         |
+                |    (SD-WAN Central Node)   |
+                +---------------------------+
+                     /      |      \      
+                    /       |       \
+                   /        |        \
+                  /         |         \
+    +------------------+   +------------------+   +------------------+
+    |     Edge Router   |   |     Edge Router   |   |     Edge Router   |
+    |   (Branch A Site) |   |   (Branch B Site) |   |   (Branch C Site) |
+    +------------------+   +------------------+   +------------------+
+           |    |               |    |               |    |
+           |    |               |    |               |    |
+     MPLS  |    | Broadband/LTE  |    | MPLS          |    | Broadband/LTE
+    +------+    +----------------+    +---------------+    +------------+
+    | MPLS Backbone / Public WAN (Internet, LTE, 5G)                         |
+    +-----------------------------------------------------------------------+
+```
+
+---
+
+### **Key Points in SD-WAN Deployment**
+
+1. **Controller**: The SD-WAN controller manages all branches and applies policies for traffic routing and path selection. It connects branches through multiple WAN links, providing seamless connectivity.
+   
+2. **Edge Routers**: These are the devices deployed at each branch, managing local traffic and communicating with the controller. They route traffic based on the dynamic policies received from the controller.
+
+3. **Multiple WAN Links**:
+   - **MPLS** is used for high-priority traffic due to its reliability and low-latency properties.
+   - **Broadband and LTE** provide additional, cheaper connectivity options for less critical traffic or for failover when MPLS performance degrades.
+
 ---
 
 ## **Contributing**
